@@ -12,6 +12,8 @@ class BaseTerrain {
 public:
 	BaseTerrain() {}
 
+	void CreateHeightMap(const char* filename, int width, int height);
+
 	void InitTerrain();
 
 	void Render(const BasicCamera& camera);

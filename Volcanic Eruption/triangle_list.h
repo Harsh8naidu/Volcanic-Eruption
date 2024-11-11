@@ -38,6 +38,8 @@ private:
 
 	void InitVertices(const BaseTerrain* pTerrain, std::vector<Vertex>& Vertices);
 
+	void InitIndices(std::vector<unsigned int>& Indices);
+
 	int m_width = 0;
 	int m_depth = 0;
 	GLuint m_vao; // Vertex Array Object

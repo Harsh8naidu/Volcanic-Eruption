@@ -44,10 +44,14 @@ bool ReadFile(const char* pFileName, string& outFile)
 
 
 #ifdef _WIN32
-char* ReadBinaryFile(const char* pFilename, int& size) {
+char* ReadBinaryFile(const char* pFilename, int& size)
+{
+	std::cout << "READING FILE: " << pFilename << std::endl;
+    std::cout << "Reading file: " << size << std::endl;
     FILE* f = NULL;
-    errno_t err = fopen_s(&f, pFilename, "rb");
 
+    errno_t err = fopen_s(&f, pFilename, "rb");
+    
     if (!f) {
         char buf[256] = { 0 };
         strerror_s(buf, sizeof(buf), err);
@@ -61,31 +65,28 @@ char* ReadBinaryFile(const char* pFilename, int& size) {
     if (error) {
         char buf[256] = { 0 };
         strerror_s(buf, sizeof(buf), err);
-        std::cout << "Error getting file size for: " << pFilename << std::endl;
-        fclose(f);
+        std::cout << "Error opening file: " << pFilename << std::endl;
         return NULL;
     }
 
-    // Set the target size to a multiple of sizeof(float)
-    int targetSize = (stat_buf.st_size / sizeof(float)) * sizeof(float);
-    size = targetSize;  // Update size to be exactly what we need
+    size = stat_buf.st_size;
 
-    char* p = (char*)malloc(targetSize);
+    char* p = (char*)malloc(size);
     assert(p);
 
-    size_t bytes_read = fread(p, 1, targetSize, f);
+    size_t bytes_read = fread(p, 1, size, f);
 
-    if (bytes_read != targetSize) {
-        std::cout << "Error reading the required number of bytes from file: " << pFilename << std::endl;
-        free(p);
-        fclose(f);
+    if (bytes_read != size) {
+        char buf[256] = { 0 };
+        strerror_s(buf, sizeof(buf), err);
+        std::cout << "Error opening file: " << pFilename << std::endl;
         exit(0);
     }
 
     fclose(f);
+
     return p;
 }
-
 
 void WriteBinaryFile(const char* pFilename, const void* pData, int size)
 {

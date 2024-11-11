@@ -9,8 +9,8 @@
 #include <glfw3.h>
 #include "glfw.h"
 
-#define WINDOW_WIDTH  1920
-#define WINDOW_HEIGHT 1080
+#define WINDOW_WIDTH  2600
+#define WINDOW_HEIGHT 1600
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 static void CursorPosCallback(GLFWwindow* window, double x, double y);
@@ -135,6 +135,7 @@ private:
         float FOV = 45.0f;
         float zNear = 0.1f;
         float zFar = 2000.0f;
+		float aspectRation = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
         PersProjInfo persProjInfo = { FOV, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, zNear, zFar };
 
         m_pGameCamera = new BasicCamera(persProjInfo, Pos, Target, Up);
@@ -143,13 +144,16 @@ private:
 
     void InitTerrain()
     {
-        float WorldScale = 4.0f;
-        //m_terrain.InitTerrain(WorldScale);
-#ifdef _WIN32		
-        m_terrain.LoadFromFile("heightmap.save");
-#else 
-        m_terrain.LoadFromFile("heightmap.save");
-#endif		
+        m_terrain.CreateHeightMap("heightmap.save", 512, 512);
+
+		m_terrain.LoadFromFile("heightmap.save");
+//        float WorldScale = 4.0f;
+//        //m_terrain.InitTerrain(WorldScale);
+//#ifdef _WIN32		
+//        m_terrain.LoadFromFile("heightmap.save");
+//#else 
+//        m_terrain.LoadFromFile("heightmap.save");
+//#endif		
     }
 
     GLFWwindow* window = NULL;
