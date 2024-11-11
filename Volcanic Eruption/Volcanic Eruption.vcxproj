@@ -24,6 +24,7 @@
     <ProjectGuid>{0da897ff-8f82-4c46-a983-8668d3424bd7}</ProjectGuid>
     <RootNamespace>VolcanicEruption</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Volcanic Eruption</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -70,6 +71,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Libraries\assimp\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -104,10 +108,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\GLEW\include;$(SolutionDir)\Linking\GLFW\include;C:\Libraries\assimp_test;C:\Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Linking\GLEW\lib;$(SolutionDir)\Linking\GLFW\lib;C:\Libraries\assimp_test\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +135,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="basic_glfw_camera.cpp" />
+    <ClCompile Include="glfw.cpp" />
+    <ClCompile Include="glm_camera.cpp" />
+    <ClCompile Include="math_3d.cpp" />
+    <ClCompile Include="technique.cpp" />
+    <ClCompile Include="terrain.cpp" />
+    <ClCompile Include="terrain_technique.cpp" />
+    <ClCompile Include="triangle_list.cpp" />
+    <ClCompile Include="util.cpp" />
     <ClCompile Include="Volcanic Eruption.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="array_2d.h" />
+    <ClInclude Include="basic_glfw_camera.h" />
+    <ClInclude Include="glfw.h" />
+    <ClInclude Include="glm_camera.h" />
+    <ClInclude Include="libs.h" />
+    <ClInclude Include="math_3d.h" />
+    <ClInclude Include="technique.h" />
+    <ClInclude Include="terrain.h" />
+    <ClInclude Include="terrain_technique.h" />
+    <ClInclude Include="triangle_list.h" />
+    <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="heightmap.save" />
+    <None Include="terrain.fs" />
+    <None Include="terrain.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

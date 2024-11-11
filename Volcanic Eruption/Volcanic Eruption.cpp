@@ -1,20 +1,202 @@
-// Volcanic Eruption.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <glew.h>
 
-#include <iostream>
+#include "util.h"
+#include "basic_glfw_camera.h"
+#include "terrain.h"
+#include <glfw3.h>
+#include "glfw.h"
 
-int main()
+#define WINDOW_WIDTH  1920
+#define WINDOW_HEIGHT 1080
+
+static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+static void CursorPosCallback(GLFWwindow* window, double x, double y);
+static void MouseButtonCallback(GLFWwindow* window, int Button, int Action, int Mode);
+
+
+class VolcanicEruption
 {
-    std::cout << "Hello World!\n";
+public:
+
+    VolcanicEruption()
+    {
+    }
+
+    virtual ~VolcanicEruption()
+    {
+        SAFE_DELETE(m_pGameCamera);
+    }
+
+
+    void Init()
+    {
+        CreateWindow();
+
+        InitCallbacks();
+
+        InitCamera();
+
+        InitTerrain();
+    }
+
+
+    void Run()
+    {
+        while (!glfwWindowShouldClose(window)) {
+            RenderScene();
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+    }
+
+
+    void RenderScene()
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        m_terrain.Render(*m_pGameCamera);
+    }
+
+
+    void PassiveMouseCB(int x, int y)
+    {
+        m_pGameCamera->OnMouse(x, y);
+    }
+
+    void KeyboardCB(glm::uint key, int state)
+    {
+        if (state == GLFW_PRESS) {
+
+            switch (key) {
+
+            case GLFW_KEY_ESCAPE:
+            case GLFW_KEY_Q:
+                glfwDestroyWindow(window);
+                glfwTerminate();
+                exit(0);
+
+            case GLFW_KEY_C:
+                m_pGameCamera->Print();
+                break;
+
+            case GLFW_KEY_W:
+                m_isWireframe = !m_isWireframe;
+
+                if (m_isWireframe) {
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                }
+                else {
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                }
+
+                break;
+            }
+        }
+
+        m_pGameCamera->OnKeyboard(key);  // Keyboard handling via camera commented out
+    }
+
+
+    void MouseCB(int button, int action, int x, int y)
+    {
+    }
+
+
+private:
+
+    void CreateWindow()
+    {
+        int major_ver = 0;
+        int minor_ver = 0;
+        bool is_full_screen = false;
+        window = glfw_init(major_ver, minor_ver, WINDOW_WIDTH, WINDOW_HEIGHT, is_full_screen, "Terrain Rendering - Demo 1");
+
+        glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    }
+
+
+    void InitCallbacks()
+    {
+        glfwSetKeyCallback(window, KeyCallback);
+        glfwSetCursorPosCallback(window, CursorPosCallback);
+        glfwSetMouseButtonCallback(window, MouseButtonCallback);
+    }
+
+
+    void InitCamera()
+    {
+        Vector3f Pos(100.0f, 220.0f, -400.0f);
+        Vector3f Target(0.0f, -0.25f, 1.0f);
+        Vector3f Up(0.0, 1.0f, 0.0f);
+
+        float FOV = 45.0f;
+        float zNear = 0.1f;
+        float zFar = 2000.0f;
+        PersProjInfo persProjInfo = { FOV, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, zNear, zFar };
+
+        m_pGameCamera = new BasicCamera(persProjInfo, Pos, Target, Up);
+    }
+
+
+    void InitTerrain()
+    {
+        float WorldScale = 4.0f;
+        //m_terrain.InitTerrain(WorldScale);
+#ifdef _WIN32		
+        m_terrain.LoadFromFile("heightmap.save");
+#else 
+        m_terrain.LoadFromFile("heightmap.save");
+#endif		
+    }
+
+    GLFWwindow* window = NULL;
+    BasicCamera* m_pGameCamera = NULL;
+    bool m_isWireframe = false;
+    BaseTerrain m_terrain;
+};
+
+VolcanicEruption* app = NULL;
+
+
+static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    app->KeyboardCB(key, action);
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+static void CursorPosCallback(GLFWwindow* window, double x, double y)
+{
+    app->PassiveMouseCB((int)x, (int)y);
+}
+
+static void MouseButtonCallback(GLFWwindow* window, int Button, int Action, int Mode)
+{
+    double x, y;
+
+    glfwGetCursorPos(window, &x, &y);
+
+    app->MouseCB(Button, Action, (int)x, (int)y);
+}
+
+
+int main(int argc, char** argv)
+{
+    app = new VolcanicEruption();
+
+    app->Init();
+
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+
+    app->Run();
+
+    delete app;
+
+    return 0;
+}
