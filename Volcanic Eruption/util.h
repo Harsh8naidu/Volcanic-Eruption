@@ -11,7 +11,7 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
-#include <glew.h>
+#include <glad/glad.h>
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 

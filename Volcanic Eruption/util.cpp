@@ -6,9 +6,6 @@
 #include <sys/time.h>
 #endif
 
-#ifndef VULKAN
-#include <glew.h>
-#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -255,8 +252,8 @@ void gl_check_error(const char* function, const char* file, int line)
             break;
         case GL_CONTEXT_LOST: printf("GL_CONTEXT_LOST");
             break;
-        case GL_TABLE_TOO_LARGE: printf("GL_TABLE_TOO_LARGE");
-            break;
+       /* case GL_TABLE_TOO_LARGE: printf("GL_TABLE_TOO_LARGE");
+            break;*/
         default:
             printf("Unknown error code %d", error);
         }

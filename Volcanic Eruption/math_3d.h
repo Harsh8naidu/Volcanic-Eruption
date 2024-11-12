@@ -645,6 +645,11 @@ public:
 
     void CalcClipPlanes(Vector4f& l, Vector4f& r, Vector4f& b, Vector4f& t, Vector4f& n, Vector4f& f) const;
 
+    const float* ToFloatPtr() const
+    {
+        return &m[0][0];  // Return the address of the first element of the matrix
+    }
+
 private:
     void InitRotationX(float RotateX);
     void InitRotationY(float RotateY);

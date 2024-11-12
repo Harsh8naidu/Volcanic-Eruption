@@ -72,7 +72,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Libraries\assimp\include;$(IncludePath)</IncludePath>
+    <IncludePath>vcpkg/installed/x64-windows/include;$(IncludePath)</IncludePath>
+    <LibraryPath>vcpkg/installed/x64-windows/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -108,14 +109,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\GLEW\include;$(SolutionDir)\Linking\GLFW\include;C:\Libraries\assimp_test;C:\Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\GLEW\include;$(SolutionDir)\Linking\GLFW\include;C:\Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Linking\GLEW\lib;$(SolutionDir)\Linking\GLFW\lib;C:\Libraries\assimp_test\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Linking\GLEW\lib;$(SolutionDir)\Linking\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,9 +140,12 @@
     <ClCompile Include="glfw.cpp" />
     <ClCompile Include="glm_camera.cpp" />
     <ClCompile Include="math_3d.cpp" />
+    <ClCompile Include="model_loader.cpp" />
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="technique.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="terrain_technique.cpp" />
+    <ClCompile Include="texture_loader.cpp" />
     <ClCompile Include="triangle_list.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="Volcanic Eruption.cpp" />
@@ -153,9 +157,12 @@
     <ClInclude Include="glm_camera.h" />
     <ClInclude Include="libs.h" />
     <ClInclude Include="math_3d.h" />
+    <ClInclude Include="model_loader.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="technique.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="terrain_technique.h" />
+    <ClInclude Include="texture_loader.h" />
     <ClInclude Include="triangle_list.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
@@ -163,6 +170,18 @@
     <None Include="heightmap.save" />
     <None Include="terrain.fs" />
     <None Include="terrain.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\heightmap_lowres_v03.obj">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\colormap_v03.png" />
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\heightmap_v03.tif" />
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\normalmap_v03.PNG" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

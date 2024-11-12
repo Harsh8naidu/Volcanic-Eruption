@@ -2,7 +2,6 @@
 #define TECHNIQUE_H
 
 #include <list>
-#include <glew.h>
 
 class Technique
 {

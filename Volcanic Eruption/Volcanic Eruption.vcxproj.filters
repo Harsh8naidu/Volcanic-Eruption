@@ -46,6 +46,9 @@
     <Filter Include="Assets\Fonts">
       <UniqueIdentifier>{eff145df-05c5-41bf-ae66-5a9d2f477da9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Normalmaps">
+      <UniqueIdentifier>{3793e55a-41cc-4f5d-ba87-de4bf461cff7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs.h">
@@ -81,6 +84,15 @@
     <ClInclude Include="terrain_technique.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Assets\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="model_loader.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="texture_loader.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Volcanic Eruption.cpp">
@@ -113,16 +125,39 @@
     <ClCompile Include="terrain_technique.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Assets\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="model_loader.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="texture_loader.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="heightmap.save">
-      <Filter>Source Files\Core</Filter>
-    </None>
-    <None Include="terrain.vs">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Assets\Heightmaps</Filter>
     </None>
     <None Include="terrain.fs">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="terrain.vs">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\heightmap_v03.tif">
+      <Filter>Assets\Heightmaps</Filter>
+    </Image>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\normalmap_v03.PNG">
+      <Filter>Assets\Normalmaps</Filter>
+    </Image>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\colormap_v03.png">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\OneDrive\Desktop\Terrain - 3 Volcano Height maps  Models - Standard\v03\heightmap_lowres_v03.obj">
+      <Filter>Assets\Models</Filter>
+    </Image>
   </ItemGroup>
 </Project>

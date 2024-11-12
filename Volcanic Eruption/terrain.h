@@ -1,34 +1,29 @@
-#ifndef TERRAIN_H
-#define TERRAIN_H
-
-#include <assimp/types.h> // Try changing this to #include types.h and type your own code in types.h
+#pragma once
+#include <vector>
 #include "basic_glfw_camera.h"
-#include "array_2d.h"
+#include "shader.h"
+#include "model_loader.h" // Ensure this header is necessary
 
-#include "triangle_list.h"
-#include "terrain_technique.h"
-
-class BaseTerrain {
+class Terrain {
 public:
-	BaseTerrain() {}
+    // Default constructor
+    Terrain() : m_model(nullptr), m_width(0), m_height(0), m_texture(0), m_normalMap(0), m_terrainVAO(0), m_shader("terrain.vs", "terrain.fs"), maxHeight(40.0f) {}
 
-	void CreateHeightMap(const char* filename, int width, int height);
+    // Constructor that accepts a ModelLoader pointer
+    Terrain(ModelLoader* model) : m_model(model), m_width(0), m_height(0), m_texture(0), m_normalMap(0), m_terrainVAO(0), m_shader("terrain.vs", "terrain.fs"), maxHeight(40.0f) {}
 
-	void InitTerrain();
+    void LoadHeightmap(const char* filename, int width, int height);
+    void ApplyHeightmapToModel(const std::vector<float>& heightmapData);
+    void Render(const BasicCamera& camera);
 
-	void Render(const BasicCamera& camera);
+private:
+    GLuint m_width;
+    GLuint m_height;
+    GLuint m_texture;
+    GLuint m_normalMap;
+    GLuint m_terrainVAO;
+    Shader m_shader;
+    float maxHeight;
 
-	void LoadFromFile(const char* filename);
-
-	float GetHeight(int x, int z) const {return m_heightmap.Get(x, z);}
-
-protected:
-	void LoadHeightMapFile(const char* filename);
-
-	int m_terrainSize;
-	Array2D<float> m_heightmap;
-	TriangleList m_triangleList;
-	TerrainTechnique m_terrainTech;
+    ModelLoader* m_model;  // Pointer to ModelLoader object
 };
-
-#endif // TERRAIN_H
