@@ -99,8 +99,8 @@ private:
         }
 
         // Set GLFW window properties for OpenGL version
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // Use OpenGL 4.x
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5); // Use OpenGL 4.5 (adjust if needed)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Use OpenGL 4.x
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use OpenGL 4.5 (adjust if needed)
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use core profile
 
         // Create GLFW window
@@ -113,6 +113,13 @@ private:
 
         // Set the current OpenGL context
         glfwMakeContextCurrent(window);
+
+        if (!glfwGetCurrentContext()) {
+            std::cerr << "Failed to set the OpenGL context" << std::endl;
+            glfwDestroyWindow(window);
+            glfwTerminate();
+            return;
+        }
 
         // Load OpenGL functions with GLAD
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

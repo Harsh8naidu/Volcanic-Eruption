@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+
 // Default constructor that loads default shaders
 Shader::Shader() {
     // Default shader paths
@@ -16,7 +17,6 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     InitShader(vertexPath, fragmentPath);
 }
 
-// Helper function to initialize shaders
 void Shader::InitShader(const std::string& vertexPath, const std::string& fragmentPath) {
     // 1. Retrieve the vertex/fragment source code from file
     std::string vertexCode;
@@ -32,36 +32,81 @@ void Shader::InitShader(const std::string& vertexPath, const std::string& fragme
     fragmentCode = fShaderStream.str();
 
     // 2. Compile shaders
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return;
+    }
+
+    GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
-
-    GLuint vertex, fragment;
-    GLint success;
-    GLchar infoLog[512];
-
-    // Vertex Shader
-    vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, nullptr);
-    glCompileShader(vertex);
-    CheckCompileErrors(vertex, "VERTEX");
-
-    // Fragment Shader
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, nullptr);
+    glCompileShader(vertex);
     glCompileShader(fragment);
-    CheckCompileErrors(fragment, "FRAGMENT");
 
-    // Shader Program
+    // 3. Shader Program
     ID = glCreateProgram();
     glAttachShader(ID, vertex);
     glAttachShader(ID, fragment);
     glLinkProgram(ID);
-    CheckCompileErrors(ID, "PROGRAM");
 
-    // Delete the shaders as they are now linked into our program
+    // 4. Delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 }
+
+// Helper function to initialize shaders
+//void Shader::InitShader(const std::string& vertexPath, const std::string& fragmentPath) {
+//    // 1. Retrieve the vertex/fragment source code from file
+//    std::string vertexCode;
+//    std::string fragmentCode;
+//    std::ifstream vShaderFile(vertexPath);
+//    std::ifstream fShaderFile(fragmentPath);
+//    std::stringstream vShaderStream, fShaderStream;
+//
+//    vShaderStream << vShaderFile.rdbuf();
+//    fShaderStream << fShaderFile.rdbuf();
+//
+//    vertexCode = vShaderStream.str();
+//    fragmentCode = fShaderStream.str();
+//
+//    // 2. Compile shaders
+//    const char* vShaderCode = vertexCode.c_str();
+//    const char* fShaderCode = fragmentCode.c_str();
+//
+//    GLuint vertex, fragment;
+//    GLint success;
+//    GLchar infoLog[512];
+//
+//    // Vertex Shader
+//	if (glCreateShader) {
+//		std::cerr << "ERROR::SHADER::VERTEX::FAILED_TO_CREATE_SHADER" << std::endl;
+//		std::cout << "gl create shader failed to load" << std::endl;
+//	}
+//    vertex = glCreateShader(GL_VERTEX_SHADER);
+//    glShaderSource(vertex, 1, &vShaderCode, nullptr);
+//    glCompileShader(vertex);
+//    CheckCompileErrors(vertex, "VERTEX");
+//
+//    // Fragment Shader
+//    fragment = glCreateShader(GL_FRAGMENT_SHADER);
+//    glShaderSource(fragment, 1, &fShaderCode, nullptr);
+//    glCompileShader(fragment);
+//    CheckCompileErrors(fragment, "FRAGMENT");
+//
+//    // Shader Program
+//    ID = glCreateProgram();
+//    glAttachShader(ID, vertex);
+//    glAttachShader(ID, fragment);
+//    glLinkProgram(ID);
+//    CheckCompileErrors(ID, "PROGRAM");
+//
+//    // Delete the shaders as they are now linked into our program
+//    glDeleteShader(vertex);
+//    glDeleteShader(fragment);
+//}
 
 void Shader::Use() const {
     glUseProgram(ID);
